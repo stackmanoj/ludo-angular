@@ -1,0 +1,50 @@
+<div class="configuration" *ngIf="!isConfigured">
+    <label class="container blue">Blue
+        <input type="checkbox" [(ngModel)]="isHome1">
+        <span class="checkmark"></span>
+      </label>
+  <label class="container red">Red
+    <input type="checkbox" [(ngModel)]="isHome2">
+    <span class="checkmark"></span>
+  </label>
+  <label class="container green">Green
+    <input type="checkbox" [(ngModel)]="isHome3">
+    <span class="checkmark"></span>
+  </label>
+  <label class="container yellow">Yellow
+    <input type="checkbox" [(ngModel)]="isHome4">
+    <span class="checkmark"></span>
+  </label>
+  <button class="btn play-btn" (click)="startPlay()">Play</button>
+</div>
+
+<div class="board" *ngIf="isConfigured">
+  <div *ngFor="let item of squares" class="{{item.SquareType}} {{item.SquareColor}}" [innerHTML]="item.Html" [attr.data-position]="item.Position"></div>
+  <div *ngFor="let h of homes">
+    <i *ngFor="let p of h.HomePointers" (click)="clickPointer(p.Index)" [ngStyle]="setPointerPosition(p)" [attr.data-name]="h.Index+'-'+p.Index"
+      class='fa fa-circle icon {{h.IconColor}} {{h.Index==turn && h.AutoPlay==false && h.PlayState==2?"":"disabled"}}'></i>
+    <i *ngFor="let p of h.HomePointers" (click)="clickPointer(p.Index)" [ngStyle]="setPointerPosition(p)" [attr.data-name]="h.Index+'-'+p.Index"
+      class='fa fa-cog fa-spin icon move-indicator {{h.IconColor}} {{movablePointers.indexOf(p)>-1?"":"hide"}}'></i>
+    <span style="font-size:30px;" *ngIf="h.WinnerNumber>0" class="winner-home winner-home-{{h.Index}}">{{h.WinnerNumber}}</span>
+  </div>
+  <div class="jumbotron game-over" *ngIf="gameOver">Game Over</div>
+  <button class="btn spinner spinner-1" [disabled]="turn != 1 || homes[0].PlayState == 2" (click)="spinDice()">{{dice}}</button>
+  <button class="btn spinner spinner-2" [disabled]="turn != 2 || homes[1].PlayState == 2" (click)="spinDice()">{{dice}}</button>
+  <button class="btn spinner spinner-3" [disabled]="turn != 3 || homes[2].PlayState == 2" (click)="spinDice()">{{dice}}</button>
+  <button class="btn spinner spinner-4" [disabled]="turn != 4 || homes[3].PlayState == 2" (click)="spinDice()">{{dice}}</button>
+  <button class="btn replay-btn" (click)="replay()">Replay</button>
+</div>
+<!-- <div>Total Moves - {{totalMoves.home1+totalMoves.home2+totalMoves.home3+totalMoves.home4}}</div>
+<div>Home 1 - {{totalMoves.home1}}, Winner Number - {{homes[0].WinnerNumber}}</div>
+<div>Home 2 - {{totalMoves.home2}}, Winner Number - {{homes[1].WinnerNumber}}</div>
+<div>Home 3 - {{totalMoves.home3}}, Winner Number - {{homes[2].WinnerNumber}}</div>
+<div>Home 4 - {{totalMoves.home4}}, Winner Number - {{homes[3].WinnerNumber}}</div> -->
+<br>
+
+<!-- <button class="btn btn-primary" [disabled]="isSpinnerDisabled" (click)="spinDice(false)">{{dice}}</button> -->
+<!-- <button class="btn btn-primary" (click)="clickManual(1)">1</button>
+<button class="btn btn-primary" (click)="clickManual(2)">2</button>
+<button class="btn btn-primary" (click)="clickManual(3)">3</button>
+<button class="btn btn-primary" (click)="clickManual(4)">4</button>
+<button class="btn btn-primary" (click)="clickManual(5)">5</button>
+<button class="btn btn-primary" (click)="clickManual(6)">6</button> -->
